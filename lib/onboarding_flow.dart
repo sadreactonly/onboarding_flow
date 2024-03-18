@@ -1,4 +1,4 @@
-library onboarding_plus;
+library onboarding_flow;
 
 export 'onboarding/button_params.dart';
 export 'onboarding/onboarding.dart';

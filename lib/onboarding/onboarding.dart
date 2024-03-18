@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:onboarding_minimal/onboarding/widgets/app_bar.dart';
-import 'package:onboarding_minimal/onboarding/widgets/skip_button.dart';
+import 'package:onboarding_flow/onboarding/widgets/app_bar.dart';
+import 'package:onboarding_flow/onboarding/widgets/skip_button.dart';
 
 import 'button_params.dart';
 import 'widgets/indicator.dart';

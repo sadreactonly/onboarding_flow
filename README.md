@@ -1,4 +1,4 @@
-# Onboarding Plus
+# Onboarding Flow
 
 A comprehensive and customizable Flutter package designed to simplify the creation of onboarding experiences in your Flutter applications. With this package, you can easily set up onboarding screens with beautiful images, customizable text, and navigation buttons.
 
@@ -12,7 +12,7 @@ A comprehensive and customizable Flutter package designed to simplify the creati
 
 ## Getting Started
 
-To use the  onboarding_plus package in your project, follow these steps:
+To use the  onboarding_flow package in your project, follow these steps:
 
 ### Installation
 
@@ -20,7 +20,7 @@ Add the package to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  onboarding_plus: ^0.0.1
+  onboarding_flow: ^0.0.1
 ```
 ## Usage
 - **Default**

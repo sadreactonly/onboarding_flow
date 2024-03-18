@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  onboarding_minimal:
+  onboarding_flow:
     path: ../
 
   # The following adds the Cupertino Icons font to your application.
