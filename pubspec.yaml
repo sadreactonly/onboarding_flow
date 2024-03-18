@@ -1,6 +1,6 @@
-name: onboarding_minimal
+name: onboarding_plus
 description: "A highly customizable Flutter package designed to enhance the first-time user experience through engaging onboarding flows. Featuring pre-designed pages, dynamic content support, and extensive customization options for animations, buttons, and indicators, it simplifies the creation of informative onboarding processes with minimal setup."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/sadreactonly/onboarding_plus
 
 environment:
