@@ -1,0 +1,21 @@
+name: onboarding_minimal
+description: "A highly customizable Flutter package designed to enhance the first-time user experience through engaging onboarding flows. Featuring pre-designed pages, dynamic content support, and extensive customization options for animations, buttons, and indicators, it simplifies the creation of informative onboarding processes with minimal setup."
+version: 0.0.1
+homepage: 'https://ikigai-digital.com/'
+
+environment:
+  sdk: '>=3.3.1 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+
+
