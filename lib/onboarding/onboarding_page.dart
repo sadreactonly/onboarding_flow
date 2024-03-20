@@ -1,33 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// A widget that displays a single page of an onboarding process.
-///
-/// This widget is designed to showcase an image along with optional
-/// overlay content provided by the [child] widget. The image can be customized
-/// in size through [imageWidth] and [imageHeight], and the whole page
-/// can be padded using [padding]. For a full-size image that covers the
-/// entire widget area without specific width or height, use the [OnboardingPage.fullSize]
-/// constructor.
-///
-/// [OnboardingPage.fullSize] constructor creates an instance with the image
-/// occupying the full available space, disregarding [imageWidth] and [imageHeight].
-///
-/// Example Usage:
-/// ```dart
-/// OnboardingPage(
-///   imageProvider: AssetImage('path/to/your/image.png'),
-///   child: Text('Welcome to our app!'),
-///   padding: EdgeInsets.all(20),
-/// )
-/// ```
-///
-/// Or for a full-size image:
-/// ```dart
-/// OnboardingPage.fullSize(
-///   imageProvider: AssetImage('path/to/your/image.png'),
-///   child: Text('Dive right in!'),
-/// )
-/// ```
 class OnboardingPage extends StatelessWidget {
   /// The width of the image displayed within the onboarding page. If null, the image
   /// will occupy the full available width.
@@ -38,7 +10,7 @@ class OnboardingPage extends StatelessWidget {
   final double? imageHeight;
 
   /// The widget to display over the image. Typically used for onboarding text content or buttons.
-  final Widget child;
+  final Widget? child;
 
   /// The [ImageProvider] for the image to display in the background.
   final ImageProvider imageProvider;
@@ -46,9 +18,17 @@ class OnboardingPage extends StatelessWidget {
   /// Optional padding for the onboarding page. Defaults to symmetric horizontal padding of 20.
   final EdgeInsets? padding;
 
+  /// The title widget to display over the image.
+  final Widget? title;
+
+  /// The description widget to display over the image.
+  final Widget? description;
+
   const OnboardingPage(
       {super.key,
-      required this.child,
+      this.child,
+      this.title,
+      this.description,
       required this.imageProvider,
       this.imageWidth = 300,
       this.imageHeight = 300,
@@ -92,16 +72,18 @@ class OnboardingPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 10,
-            left: 10,
-            child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 40,
-                  left: 20,
-                  right: 20,
-                ),
-                child: child),
-          )
+              bottom: 10,
+              left: 10,
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      title ?? const SizedBox.shrink(),
+                      description ?? const SizedBox.shrink(),
+                      child ?? const SizedBox.shrink()
+                    ],
+                  )))
         ],
       ),
     );

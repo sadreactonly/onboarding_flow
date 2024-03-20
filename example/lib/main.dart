@@ -33,6 +33,8 @@ class HomePage extends StatelessWidget {
         onSkip: () {
           Navigator.pop(context);
         },
+        continueText: 'Continue',
+        finishText: 'Finish',
         children: const [
           OnboardingPage(
             imageProvider: AssetImage('assets/img1.jpeg'),
@@ -82,95 +84,114 @@ class HomePage extends StatelessWidget {
         ]);
   }
 
-  _openCustom(BuildContext context) {
+  _partizan(BuildContext context) {
     return Onboarding(
-        animationDuration: const Duration(milliseconds: 300),
-        backgroundColor: Colors.white,
-        appBarBuilder: (context, itemSelected, itemCount, controller) {
-          return AppBar(
-            title: Text(
-              itemCount != itemSelected
-                  ? '${itemCount - itemSelected} more left'
-                  : '',
-              style: const TextStyle(color: Colors.green),
+      backgroundColor: Colors.black87,
+      animationDuration: const Duration(milliseconds: 100),
+      onSkip: () {
+        Navigator.pop(context);
+      },
+      onFinished: () async {
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
+      },
+      appBarBuilder: (context, selected, count, controller) {
+        return AppBar(
+          backgroundColor: Colors.black87,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_outlined,
+              color: Colors.white,
             ),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.skip_next))
-            ],
-          );
-        },
-        indicatorBuilder: (context, itemSelected, itemsCount) {
-          // Example: Wrap the indicator with additional padding and align it at the bottom center
-          return ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 28),
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemBuilder: (_, i) {
-                final isSelected = itemSelected == i + 1;
-
-                return Icon(
-                  Icons.sports_basketball,
-                  size: isSelected ? 22 : 14.5,
-                  color: isSelected ? Colors.green : Colors.red,
-                );
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Text('$selected/$count'),
+          centerTitle: true,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
               },
-              separatorBuilder: (_, __) => const SizedBox(width: 10),
-              itemCount: itemsCount,
+              child: Text('Skip'),
+            )
+          ],
+        );
+      },
+      continueText: 'Nastavi',
+      continueBorderColor: Colors.white,
+      continueBackgroundColor: Colors.transparent,
+      continueTextStyle: const TextStyle(color: Colors.white),
+      buttonBorderRadius: 24,
+      finishText: 'Zavrsi',
+      finishBorderColor: Colors.white,
+      finishBackgroundColor: Colors.white,
+      finishTextStyle: const TextStyle(color: Colors.black),
+      children: [
+        OnboardingPage(
+            title: Text(
+              'Rezultati i utakmice',
+              style: TextStyle(color: Colors.white, fontSize: 22),
             ),
-          );
-        },
-        children: const [
-          OnboardingPage(
-            imageProvider: AssetImage('assets/img1.jpeg'),
+            description: Text(
+              'Budite u toku sa trenutnim rezultatima i predstojećim utakmicama',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            imageProvider: AssetImage('assets/background/news_background.jpg')),
+        OnboardingPage(
             child: Column(
               children: [
                 Text(
-                  'Title 1',
-                  style: TextStyle(fontSize: 42, color: Colors.white),
+                  'Najnovije vesti',
+                  style: TextStyle(color: Colors.white),
                 ),
                 Text(
-                  'Subtitle 1',
-                  style: TextStyle(fontSize: 28, color: Colors.white),
+                  'Budite u toku sa trenutnim rezultatima i predstojećim utakmicama',
+                  style: TextStyle(color: Colors.white),
                 ),
               ],
             ),
-          ),
-          OnboardingPage(
-            imageProvider: AssetImage('assets/img2.jpeg'),
+            imageProvider: AssetImage('assets/background/main_background.jpg')),
+        OnboardingPage(
             child: Column(
               children: [
                 Text(
-                  'Title 2',
-                  style: TextStyle(fontSize: 42, color: Colors.white),
+                  'Gledajte Partizan na YouTube-u',
+                  style: TextStyle(color: Colors.white),
                 ),
                 Text(
-                  'Subtitle 2',
-                  style: TextStyle(fontSize: 28, color: Colors.white),
+                  'Istražite sve Partizan tematske video sadržaje i prenose uživo sa raznih YouTube kanala',
+                  style: TextStyle(color: Colors.white),
                 ),
               ],
             ),
+            imageProvider: AssetImage('assets/background/fk_background.jpg'))
+      ],
+      indicatorBuilder: (context, itemSelected, itemsCount) {
+        // Example: Wrap the indicator with additional padding and align it at the bottom center
+        return ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 28),
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemBuilder: (_, i) {
+              final isSelected = itemSelected == i + 1;
+
+              return Image.asset(
+                'assets/img.png',
+                height: isSelected ? 30 : 20,
+                width: isSelected ? 30 : 20,
+                color: isSelected ? Colors.white : Colors.white24,
+              );
+            },
+            separatorBuilder: (_, __) => const SizedBox(width: 10),
+            itemCount: itemsCount,
           ),
-          OnboardingPage(
-            imageProvider: AssetImage('assets/img3.jpeg'),
-            child: Column(
-              children: [
-                Text(
-                  'Title 3',
-                  style: TextStyle(fontSize: 42, color: Colors.white),
-                ),
-                Text(
-                  'Subtitle3',
-                  style: TextStyle(fontSize: 28, color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ]);
+        );
+      },
+    );
   }
 
   @override
@@ -199,7 +220,7 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => _openCustom(context)),
+                          builder: (context) => _partizan(context)),
                     );
                   },
                   child: const Text('Custom'))

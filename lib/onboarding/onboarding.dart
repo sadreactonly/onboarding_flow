@@ -3,122 +3,131 @@ import 'package:flutter/services.dart';
 import 'package:onboarding_flow/onboarding/widgets/app_bar.dart';
 import 'package:onboarding_flow/onboarding/widgets/skip_button.dart';
 
-import 'button_params.dart';
 import 'widgets/indicator.dart';
 
-/// `OnboardPage` is a StatefulWidget that provides a customizable onboarding experience.
-/// It allows developers to specify the content of each onboarding page, customize the appearance and behavior
-/// of navigation buttons and page indicators, and handle actions such as page changes, completion, and skipping the onboarding.
+/// A customizable onboarding widget for Flutter applications.
+///
+/// This widget provides a flexible framework for building onboarding screens
+/// with customizable text styles, background colors, buttons, and more. It supports
+/// custom navigation logic including page changes, completion actions, and skip functionality.
 ///
 /// Parameters:
-/// - `animationDuration`: The duration of the animation between onboarding pages.
-/// - `appBarTextStyle`: TextStyle for the text displayed in the AppBar, like the current page number.
+/// - `animationDuration`: Duration of the animation between onboarding pages.
+/// - `appBarTextStyle`: TextStyle for the text displayed in the AppBar. Cannot be used with `appBarBuilder`.
 /// - `backgroundColor`: Background color of the onboarding screens.
-/// - `buttonParams`: Parameters to customize the appearance of the continue and finish buttons.
 /// - `children`: A list of widgets that represent each page of the onboarding content.
 /// - `onFinished`: Callback function that is called when the onboarding process is completed.
-/// - `onPageChange`: Callback function that is called when a new page is displayed to the user.
+/// - `onPageChange`: Callback function that is called when a new page is displayed.
 /// - `onSkip`: Callback function that is called when the skip button is pressed.
-/// - `skipText`: Text to display on the skip button.
-/// - `skipTextColor`: Color of the text displayed on the skip button.
+/// - `onBack`: Callback function that is called when the back navigation is triggered.
+/// - `skipText`: Text to display on the skip button. Cannot be used with `skipButtonBuilder`.
+/// - `skipTextStyle`: TextStyle for the text displayed on the skip button.
+/// - `skipButtonBuilder`: Custom builder for the skip button. Overrides `skipText` and `skipTextStyle`.
+/// - `indicatorBuilder`: Custom builder for the page indicator.
+/// - `appBarBuilder`: Custom builder for the AppBar. Overrides `appBarTextStyle`.
+/// - `continueText`: Text for the continue button.
+/// - `finishText`: Text for the finish button.
+/// - `continueTextStyle`: TextStyle for the continue button text.
+/// - `finishTextStyle`: TextStyle for the finish button text.
+/// - `continueBackgroundColor`: Background color of the continue button.
+/// - `finishBackgroundColor`: Background color of the finish button.
+/// - `continueBorderColor`: Border color of the continue button.
+/// - `finishBorderColor`: Border color of the finish button.
+/// - `buttonBorderRadius`: Border radius of the continue and finish buttons.
 ///
 /// Example Usage:
 /// ```dart
-/// OnboardPage(
-///   animationDuration: Duration(milliseconds: 300),
+/// Onboarding(
+///   animationDuration: Duration(seconds: 1),
 ///   backgroundColor: Colors.white,
-///   children: [OnboardingPage(...), OnboardingPage(...), OnboardingPage(...)],
-///   onFinished: () {
-///     print("Finished Onboarding");
-///   },
+///   children: [
+///     Text('Welcome to our App'),
+///     Text('Learn to navigate'),
+///     Text('Enjoy our features'),
+///   ],
+///   onFinished: () => print('Onboarding Finished'),
+///   continueText: 'Next',
+///   finishText: 'Get Started',
 /// )
 /// ```
 ///
+/// Note: Ensure to not use `appBarTextStyle` and `appBarBuilder` at the same time. The same applies to `skipText` and `skipButtonBuilder`.
+
 class Onboarding extends StatefulWidget {
-  /// - `animationDuration`: The duration of the animation between onboarding pages.
+  /// Duration for the transition animation between onboarding pages.
   final Duration animationDuration;
 
-  /// - `appBarTextStyle`: TextStyle for the text displayed in the AppBar, like the current page number.
+  /// Optional text style for the AppBar's title. Not used if `appBarBuilder` is provided.
   final TextStyle? appBarTextStyle;
 
-  /// - `backgroundColor`: Background color of the onboarding screens.
+  /// Background color for the onboarding screen.
   final Color backgroundColor;
 
-  /// - `buttonParams`: Parameters to customize the appearance of the continue and finish buttons.
-  final ButtonParams? buttonParams;
-
-  /// - `children`: A list of widgets that represent each page of the onboarding content.
+  /// Widgets to display on each onboarding page.
   final List<Widget> children;
 
-  /// - `onFinished`: Callback function that is called when the onboarding process is completed.
+  /// Callback triggered when the onboarding process completes.
   final Function()? onFinished;
 
-  /// - `onPageChange`: Callback function that is called when a new page is displayed to the user.
+  /// Callback for handling page changes, provides the index of the new page.
   final Function(int index)? onPageChange;
 
-  /// - `onSkip`: Callback function that is called when the skip button is pressed.
+  /// Callback triggered when the user decides to skip the onboarding.
   final Function()? onSkip;
 
-  /// - `onBack`: Callback function that is called when the skip button is pressed.
+  /// Callback triggered when the user navigates back from the onboarding.
   final Function()? onBack;
 
-  /// - `skipText`: Text to display on the skip button.
+  /// Text to display on the skip button. Not used if `skipButtonBuilder` is provided.
   final String? skipText;
 
-  /// - `skipTextStyle`: TextStyle of the text displayed on the skip button.
+  /// Text style for the skip button's text.
   final TextStyle? skipTextStyle;
 
-  /// Defines a function type for building [SkipButtonBuilder] widget.
-  ///
-  ///
-  /// Parameters:
-  /// - `context`: The build context.
-  /// - `SkipButtonBuilder`: [SkipButton] item.
-  ///
+  /// Custom builder for creating a skip button. Overrides `skipText` and `skipTextStyle`.
   final SkipButtonBuilder? skipButtonBuilder;
 
-  /// Defines a function type for building [Indicator] widget.
-  ///
-  ///
-  /// Parameters:
-  /// - `context`: The build context.
-  /// - `selectedItem`: The index of the currently selected item.
-  /// - `itemsCount`: The total number of items.
-  ///
+  /// Custom builder for creating page indicators.
   final IndicatorBuilder? indicatorBuilder;
 
-  /// Defines a function type for building [AppBar] widget.
-  ///
-  ///
-  /// Parameters:
-  /// - `context`: The build context.
-  /// - `selectedItem`: The index of the currently selected item.
-  /// - `itemsCount`: The total number of items.
-  /// - `controller`: The PageController for the associated PageView.
-  ///
+  /// Custom builder for creating the AppBar. Overrides `appBarTextStyle`.
   final AppBarBuilder? appBarBuilder;
 
-  /// Example Usage:
-  /// ```dart
-  /// Onboarding(
-  ///   animationDuration: Duration(milliseconds: 300),
-  ///   backgroundColor: Colors.white,
-  ///   children: [
-  ///     OnboardingPage(...),
-  ///     OnboardingPage(...),
-  ///     OnboardingPage(...)
-  ///   ],
-  ///   onFinished: () {
-  ///     print("Finished Onboarding");
-  ///   },
-  /// )
-  /// ```
+  /// Text for the 'Continue' navigation button.
+  final String continueText;
+
+  /// Text for the 'Finish' navigation button.
+  final String finishText;
+
+  /// Text style for the 'Continue' button's text.
+  final TextStyle? continueTextStyle;
+
+  /// Text style for the 'Finish' button's text.
+  final TextStyle? finishTextStyle;
+
+  /// Background color of the 'Continue' button.
+  final Color? continueBackgroundColor;
+
+  /// Background color of the 'Finish' button.
+  final Color? finishBackgroundColor;
+
+  /// Border color of the 'Continue' button.
+  final Color? continueBorderColor;
+
+  /// Border color of the 'Finish' button.
+  final Color? finishBorderColor;
+
+  /// Border radius for the 'Continue' and 'Finish' buttons.
+  final double? buttonBorderRadius;
+
+  /// Constructs an [Onboarding] widget with customizable onboarding experience.
   ///
+  /// Asserts that not both `appBarBuilder` and `appBarTextStyle`, `skipButtonBuilder` and `skipText`,
+  /// and not both `appBarBuilder` and `skipButtonBuilder` are used simultaneously.
   const Onboarding({
     super.key,
     this.appBarTextStyle,
     required this.backgroundColor,
-    this.buttonParams,
     required this.children,
     required this.animationDuration,
     this.onFinished,
@@ -130,6 +139,15 @@ class Onboarding extends StatefulWidget {
     this.indicatorBuilder,
     this.skipButtonBuilder,
     this.appBarBuilder,
+    required this.continueText,
+    required this.finishText,
+    this.continueTextStyle,
+    this.finishTextStyle,
+    this.continueBackgroundColor = Colors.blue,
+    this.finishBackgroundColor = Colors.blue,
+    this.continueBorderColor = Colors.blue,
+    this.finishBorderColor = Colors.blue,
+    this.buttonBorderRadius = 16,
   })  : assert(!(appBarBuilder != null && appBarTextStyle != null),
             '\n\nEither use appBarBuilder or appBarTextStyle, but not both.\n\n'),
         assert(!(skipButtonBuilder != null && skipText != null),
@@ -227,7 +245,12 @@ class _OnboardingState extends State<Onboarding> {
                 },
                 animationDuration: widget.animationDuration,
                 isFinished: _currentIndex == widget.children.length,
-                buttonParams: widget.buttonParams,
+                continueText: widget.continueText,
+                finishText: widget.finishText,
+                continueTextStyle: widget.continueTextStyle,
+                continueBackgroundColor: widget.continueBackgroundColor,
+                finishBackgroundColor: widget.finishBackgroundColor,
+                borderRadius: widget.buttonBorderRadius!,
               ),
               const Spacer(flex: 5),
               widget.indicatorBuilder == null
@@ -248,7 +271,15 @@ class _OnboardingState extends State<Onboarding> {
 
 class _OnboardingButton extends StatelessWidget {
   final Duration animationDuration;
-  final ButtonParams? buttonParams;
+  final String continueText;
+  final String finishText;
+  final TextStyle? continueTextStyle;
+  final TextStyle? finishTextStyle;
+  final Color? continueBackgroundColor;
+  final Color? finishBackgroundColor;
+  final Color? continueBorderColor;
+  final Color? finishBorderColor;
+  final double borderRadius;
   final bool isFinished;
   final Function()? onFinished;
   final Function()? onSkip;
@@ -258,13 +289,19 @@ class _OnboardingButton extends StatelessWidget {
     this.onFinished,
     required this.isFinished,
     this.onSkip,
-    this.buttonParams,
+    required this.continueText,
+    required this.finishText,
+    this.continueTextStyle,
+    this.finishTextStyle,
+    required this.borderRadius,
+    this.continueBackgroundColor,
+    this.finishBackgroundColor,
+    this.continueBorderColor,
+    this.finishBorderColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    final buttonParams = this.buttonParams ?? const ButtonParams();
-
     return Padding(
       padding: const EdgeInsets.only(
         left: 20,
@@ -282,26 +319,20 @@ class _OnboardingButton extends StatelessWidget {
               width: 1.0,
               color: isFinished ? Colors.black : const Color(0xFFb9b8b3),
             ),
-            foregroundColor: isFinished
-                ? buttonParams.continueBackgroundColor.withOpacity(0.6)
-                : buttonParams.finishBackgroundColor.withOpacity(0.6),
-            backgroundColor: isFinished
-                ? buttonParams.finishBackgroundColor
-                : buttonParams.continueBackgroundColor,
+            foregroundColor:
+                isFinished ? continueBorderColor : finishBorderColor,
+            backgroundColor:
+                isFinished ? finishBackgroundColor : continueBackgroundColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(buttonParams.borderRadius),
+              borderRadius: BorderRadius.circular(borderRadius),
             ),
           ),
           onPressed: () {
             isFinished ? onFinished?.call() : onSkip?.call();
           },
           child: Text(
-            isFinished ? buttonParams.finishText : buttonParams.continueText,
-            style: TextStyle(
-                fontSize: 16,
-                color: !isFinished
-                    ? buttonParams.continueTextColor
-                    : buttonParams.finishTextColor),
+            isFinished ? finishText : continueText,
+            style: isFinished ? finishTextStyle : continueTextStyle,
           ),
         ),
       ),

@@ -1,6 +1,6 @@
 name: onboarding_flow
 description: "A highly customizable Flutter package designed to enhance the first-time user experience through engaging onboarding flows."
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/sadreactonly/onboarding_flow
 
 environment:
